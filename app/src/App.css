@@ -1,0 +1,41 @@
+/* App-specific styles */
+
+/* Ensure smooth page transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.5s ease;
+}
+
+/* Loading screen */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.loading-cloud {
+  width: 60px;
+  height: 40px;
+  stroke: #C0A585;
+  stroke-width: 2;
+  fill: none;
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  animation: draw-cloud 2s ease forwards;
+}
+
+@keyframes draw-cloud {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
