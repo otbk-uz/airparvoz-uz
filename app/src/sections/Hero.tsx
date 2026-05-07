@@ -1,28 +1,59 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
 export default function Hero() {
   const { t } = useLanguage();
   const heroRef = useRef<HTMLElement>(null);
+  const planeRef = useRef<HTMLDivElement>(null);
   const layersRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number>(0);
+  const mouseRef = useRef({ x: 0, y: 0 });
+  const [planeVisible, setPlaneVisible] = useState(false);
 
-  // Scroll-driven parallax
+  // Show plane after brief delay (dramatic reveal)
+  useEffect(() => {
+    const t = setTimeout(() => setPlaneVisible(true), 400);
+    return () => clearTimeout(t);
+  }, []);
+
+  // Parallax on scroll + mouse tracking
   useEffect(() => {
     const handleScroll = () => {
       if (!layersRef.current) return;
       const scrollY = window.scrollY;
-      const layers = layersRef.current.querySelectorAll('.parallax-layer');
+
+      // Background parallax layers
+      const layers = layersRef.current.querySelectorAll<HTMLElement>('.parallax-bg-layer');
       layers.forEach((layer, i) => {
-        const speed = [0.08, 0.2][i];
-        (layer as HTMLElement).style.transform = `translateY(${scrollY * speed}px)`;
+        const speeds = [0.06, 0.14, 0.22];
+        layer.style.transform = `translateY(${scrollY * speeds[i]}px)`;
       });
-      // Plane moves upward faster on scroll
-      const plane = layersRef.current.querySelector('.plane-layer') as HTMLElement;
-      if (plane) {
-        plane.style.transform = `translateY(${-scrollY * 0.15}px) translateX(${scrollY * 0.05}px)`;
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!heroRef.current) return;
+      const rect = heroRef.current.getBoundingClientRect();
+      mouseRef.current = {
+        x: (e.clientX - rect.left) / rect.width - 0.5,
+        y: (e.clientY - rect.top) / rect.height - 0.5,
+      };
+    };
+
+    let animId: number;
+    const animateMouseParallax = () => {
+      const { x, y } = mouseRef.current;
+      if (layersRef.current) {
+        const layers = layersRef.current.querySelectorAll<HTMLElement>('.parallax-bg-layer');
+        layers.forEach((layer, i) => {
+          const depth = [8, 14, 20][i];
+          const currentTransform = layer.style.transform || '';
+          // Only add mouse offset (scroll handled separately)
+          layer.style.transform = currentTransform.replace(/rotateX\([^)]+\)|rotateY\([^)]+\)/g, '')
+            + ` rotateY(${x * depth * 0.2}deg) rotateX(${-y * depth * 0.1}deg)`;
+        });
       }
+      animId = requestAnimationFrame(animateMouseParallax);
     };
 
     const onScroll = () => {
@@ -30,9 +61,14 @@ export default function Hero() {
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    animId = requestAnimationFrame(animateMouseParallax);
+
     return () => {
       window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('mousemove', handleMouseMove);
       cancelAnimationFrame(rafRef.current);
+      cancelAnimationFrame(animId);
     };
   }, []);
 
@@ -48,95 +84,190 @@ export default function Hero() {
       style={{
         height: '100vh',
         minHeight: '700px',
-        background: 'linear-gradient(180deg, #0A1628 0%, #0f2d4a 25%, #1a5276 50%, #2e86c1 75%, #5dade2 100%)',
+        background: 'linear-gradient(180deg, #020d1f 0%, #0a1e3d 20%, #0f3460 45%, #1a5a8a 70%, #2e86c1 100%)',
+        perspective: '1200px',
       }}
     >
-      {/* Parallax Layers */}
-      <div ref={layersRef} className="absolute inset-0">
-        {/* Layer 1 - Mountains (back) */}
+      {/* ===== PARALLAX LAYERS ===== */}
+      <div ref={layersRef} className="absolute inset-0" style={{ transformStyle: 'preserve-3d' }}>
+
+        {/* Stars layer */}
         <div
-          className="parallax-layer"
+          className="parallax-bg-layer absolute inset-0"
+          style={{
+            zIndex: 0,
+            backgroundImage: `radial-gradient(1px 1px at 20% 30%, white, transparent),
+              radial-gradient(1px 1px at 60% 15%, rgba(255,255,255,0.8), transparent),
+              radial-gradient(1.5px 1.5px at 80% 45%, white, transparent),
+              radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.6), transparent),
+              radial-gradient(1px 1px at 10% 55%, white, transparent),
+              radial-gradient(1px 1px at 90% 25%, rgba(255,255,255,0.7), transparent)`,
+            opacity: 0.5,
+          }}
+        />
+
+        {/* Mountains (far) */}
+        <div
+          className="parallax-bg-layer absolute inset-0"
           style={{
             backgroundImage: 'url(/images/parallax-mountains.jpg)',
             backgroundSize: 'cover',
             backgroundPosition: 'center 60%',
             zIndex: 1,
-            opacity: 0.5,
+            opacity: 0.45,
           }}
         />
 
-        {/* Layer 2 - City (mid) */}
+        {/* City (mid) */}
         <div
-          className="parallax-layer"
+          className="parallax-bg-layer absolute inset-0"
           style={{
             backgroundImage: 'url(/images/parallax-city.jpg)',
             backgroundSize: 'cover',
-            backgroundPosition: 'center 80%',
+            backgroundPosition: 'center 75%',
             zIndex: 2,
-            opacity: 0.4,
-            maskImage: 'linear-gradient(to bottom, transparent 0%, black 40%, black 65%, transparent 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 40%, black 65%, transparent 100%)',
+            opacity: 0.35,
+            maskImage: 'linear-gradient(to bottom, transparent 0%, black 35%, black 70%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 35%, black 70%, transparent 100%)',
+          }}
+        />
+
+        {/* Clouds layer */}
+        <div
+          className="parallax-bg-layer absolute inset-0"
+          style={{
+            backgroundImage: 'url(/images/hero-clouds.jpg)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center bottom',
+            zIndex: 3,
+            opacity: 0.2,
+            maskImage: 'linear-gradient(to top, black 0%, black 30%, transparent 70%)',
+            WebkitMaskImage: 'linear-gradient(to top, black 0%, black 30%, transparent 70%)',
           }}
         />
       </div>
 
-      {/* Animated plane flying */}
+      {/* ===== PLANE CONTRAIL (smoke trail) ===== */}
+      {planeVisible && (
+        <div
+          className="absolute z-[5] pointer-events-none"
+          style={{
+            right: '35%',
+            top: '22%',
+            width: 'clamp(150px, 25vw, 400px)',
+            height: '3px',
+            background: 'linear-gradient(to left, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.0) 100%)',
+            animation: 'contrail-appear 2s 1.2s both',
+            borderRadius: '999px',
+            filter: 'blur(2px)',
+          }}
+        />
+      )}
+      {planeVisible && (
+        <div
+          className="absolute z-[5] pointer-events-none"
+          style={{
+            right: '34%',
+            top: '24%',
+            width: 'clamp(100px, 18vw, 280px)',
+            height: '2px',
+            background: 'linear-gradient(to left, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.0) 100%)',
+            animation: 'contrail-appear 2s 1.4s both',
+            borderRadius: '999px',
+            filter: 'blur(3px)',
+          }}
+        />
+      )}
+
+      {/* ===== ANIMATED PLANE ===== */}
       <div
-        className="plane-layer absolute z-[6] pointer-events-none"
+        ref={planeRef}
+        className="plane-layer absolute z-[7] pointer-events-none"
         style={{
-          right: '-5%',
-          top: '12%',
-          width: 'clamp(350px, 50vw, 800px)',
-          animation: 'plane-enter 3s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both',
+          right: '-2%',
+          top: '8%',
+          width: 'clamp(320px, 48vw, 750px)',
+          animation: planeVisible ? 'plane-fly-in 2.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both, plane-float 6s ease-in-out 3.5s infinite' : 'none',
+          opacity: planeVisible ? 1 : 0,
+          transformOrigin: 'center center',
         }}
       >
+        {/* Plane shadow on ground */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '-10%',
+            left: '10%',
+            right: '10%',
+            height: '20px',
+            background: 'radial-gradient(ellipse, rgba(0,0,0,0.25) 0%, transparent 70%)',
+            filter: 'blur(8px)',
+            transform: 'scaleX(1.5) scaleY(0.4)',
+            animation: 'shadow-pulse 6s ease-in-out 3.5s infinite',
+          }}
+        />
         <img
           src="/images/plane_uzb.png"
-          alt="Uzbekistan Airways"
+          alt="Uzbekistan Airways Boeing 787"
           className="w-full h-auto"
           style={{
-            filter: 'drop-shadow(0 20px 50px rgba(0,0,0,0.3))',
-            transform: 'scaleX(-1) rotate(-5deg)',
+            filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.4)) drop-shadow(0 0 20px rgba(20,184,166,0.15))',
+            transform: 'scaleX(-1) rotate(-8deg)',
           }}
         />
       </div>
 
-      {/* Vignette */}
+      {/* ===== VIGNETTE ===== */}
       <div
-        className="absolute inset-0 z-[5] pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at 50% 35%, transparent 25%, rgba(10,22,40,0.6) 100%)' }}
+        className="absolute inset-0 z-[6] pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at 45% 40%, transparent 20%, rgba(2,13,31,0.55) 80%, rgba(2,13,31,0.85) 100%)',
+        }}
       />
 
-      {/* Floating particles */}
-      {Array.from({ length: 12 }).map((_, i) => (
+      {/* ===== FLOATING PARTICLES ===== */}
+      {Array.from({ length: 18 }).map((_, i) => (
         <div
           key={i}
           className="absolute rounded-full pointer-events-none"
           style={{
-            width: `${Math.random() * 3 + 1}px`,
-            height: `${Math.random() * 3 + 1}px`,
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 50}%`,
-            background: 'rgba(255,255,255,0.25)',
-            animation: `float ${Math.random() * 5 + 5}s ease-in-out infinite`,
-            animationDelay: `${Math.random() * 4}s`,
+            width: `${(i % 3) + 1}px`,
+            height: `${(i % 3) + 1}px`,
+            left: `${(i * 17 + 5) % 95}%`,
+            top: `${(i * 13 + 8) % 60}%`,
+            background: i % 4 === 0 ? 'rgba(20,184,166,0.6)' : 'rgba(255,255,255,0.3)',
+            animation: `float ${6 + (i % 4)}s ease-in-out infinite`,
+            animationDelay: `${i * 0.5}s`,
             zIndex: 6,
           }}
         />
       ))}
 
-      {/* Content */}
+      {/* ===== CONTENT ===== */}
       <div
         className="relative z-10 flex flex-col items-center justify-center h-full px-6 text-center"
-        style={{ paddingTop: '60px' }}
+        style={{ paddingTop: '64px' }}
       >
+        {/* Badge */}
+        <div
+          className="mb-5 flex items-center gap-2 px-4 py-1.5 rounded-full border"
+          style={{
+            background: 'rgba(20,184,166,0.12)',
+            borderColor: 'rgba(20,184,166,0.3)',
+            animation: 'fade-in-up 0.8s 0.3s both',
+          }}
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-[#14B8A6] animate-pulse" />
+          <span className="text-[#14B8A6] text-xs font-semibold tracking-widest uppercase">Uzbekistan Airways</span>
+        </div>
+
         {/* Main Title */}
         <h1
-          className="text-white font-bold leading-[0.92] tracking-tight max-w-5xl"
+          className="text-white font-bold leading-[0.92] tracking-tight max-w-4xl"
           style={{
-            fontSize: 'clamp(2.5rem, 8vw, 6rem)',
+            fontSize: 'clamp(2.8rem, 9vw, 6.5rem)',
             fontFamily: "'Playfair Display', serif",
-            textShadow: '0 4px 50px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.3)',
+            textShadow: '0 4px 60px rgba(0,0,0,0.6), 0 2px 4px rgba(0,0,0,0.3)',
             animation: 'fade-in-up 1s 0.5s both',
           }}
         >
@@ -147,81 +278,99 @@ export default function Hero() {
 
         {/* Subtitle */}
         <p
-          className="mt-5 text-white/45 text-sm sm:text-base max-w-lg leading-relaxed"
+          className="mt-5 text-white/50 text-sm sm:text-base max-w-lg leading-relaxed"
           style={{ animation: 'fade-in-up 0.8s 0.8s both' }}
         >
           Aviabiletlar, mehmonxonalar, gidlar va ekskursiyalar — barchasi bir joyda
         </p>
 
-        {/* Banner / Meme */}
-        <div 
-          className="mt-6 px-6 py-3 bg-[#14B8A6]/10 backdrop-blur-md border border-[#14B8A6]/20 rounded-2xl max-w-2xl"
-          style={{ animation: 'fade-in-up 0.8s 1.0s both' }}
+        {/* Banner */}
+        <div
+          className="mt-5 px-5 py-2.5 rounded-2xl max-w-2xl"
+          style={{
+            background: 'rgba(20,184,166,0.1)',
+            backdropFilter: 'blur(12px)',
+            border: '1px solid rgba(20,184,166,0.25)',
+            animation: 'fade-in-up 0.8s 1.0s both',
+          }}
         >
-          <p className="text-[#14B8A6] text-sm font-medium">
+          <p className="text-[#5eead4] text-sm font-medium">
             {t('bannerText')}
           </p>
         </div>
 
-        {/* Hero Search Bar (Prominent) */}
-        <div 
-          className="mt-10 w-full max-w-3xl bg-white rounded-2xl shadow-2xl p-2 flex flex-col sm:flex-row items-center gap-2"
-          style={{ animation: 'fade-in-up 0.8s 1.1s both' }}
+        {/* Search Bar */}
+        <div
+          className="mt-8 w-full max-w-2xl rounded-2xl shadow-2xl p-1.5 flex flex-col sm:flex-row items-center gap-1.5"
+          style={{
+            background: 'rgba(255,255,255,0.96)',
+            animation: 'fade-in-up 0.8s 1.1s both',
+          }}
         >
-          <div className="flex-1 flex items-center gap-3 px-4 py-3 w-full border-b sm:border-b-0 sm:border-r border-slate-100">
-            <svg className="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-            <input 
-              type="text" 
-              placeholder={t('searchPlaceholder')} 
-              className="bg-transparent border-none outline-none text-slate-700 w-full text-sm font-medium"
+          <div className="flex-1 flex items-center gap-3 px-4 py-3 w-full">
+            <svg className="w-5 h-5 text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              type="text"
+              placeholder={t('searchPlaceholder')}
+              className="bg-transparent border-none outline-none text-slate-700 w-full text-sm font-medium placeholder:text-slate-400"
             />
           </div>
-          <button className="w-full sm:w-auto px-10 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-all shadow-lg shadow-orange-500/30">
+          <button className="w-full sm:w-auto px-8 py-3 bg-orange-500 hover:bg-orange-600 active:scale-95 text-white font-bold rounded-xl transition-all shadow-lg shadow-orange-500/30 text-sm">
             Qidirish
           </button>
         </div>
 
-        {/* CTA */}
-        <div className="flex flex-col sm:flex-row gap-3 mt-8" style={{ animation: 'fade-in-up 0.8s 1.3s both' }}>
-          <button onClick={scrollToContent} className="btn-primary flex items-center gap-2 px-10">
+        {/* CTA Buttons */}
+        <div className="flex flex-col sm:flex-row gap-3 mt-6" style={{ animation: 'fade-in-up 0.8s 1.3s both' }}>
+          <button
+            onClick={scrollToContent}
+            className="flex items-center gap-2 px-10 py-3.5 rounded-full bg-[#14B8A6] hover:bg-[#0D9488] text-white font-semibold transition-all shadow-lg shadow-[#14B8A6]/30 hover:shadow-[#14B8A6]/50 hover:-translate-y-1 active:scale-95"
+          >
             {t('heroCta')}
           </button>
-          <button 
-            onClick={scrollToContent} 
-            className="flex items-center gap-2 px-10 py-3 rounded-full bg-white/10 backdrop-blur-md text-white font-semibold hover:bg-white/20 border border-white/20 transition-all"
+          <button
+            onClick={scrollToContent}
+            className="flex items-center gap-2 px-10 py-3.5 rounded-full text-white font-semibold transition-all hover:-translate-y-1 active:scale-95"
+            style={{
+              background: 'rgba(255,255,255,0.1)',
+              backdropFilter: 'blur(12px)',
+              border: '1px solid rgba(255,255,255,0.2)',
+            }}
           >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
             360° ko'rish
           </button>
         </div>
 
-        {/* Scroll indicator */}
+        {/* Scroll Indicator */}
         <div
           className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-          style={{ animation: 'fade-in-up 0.8s 1.4s both' }}
+          style={{ animation: 'fade-in-up 0.8s 1.6s both' }}
         >
-          <span className="text-white/25 text-[10px] uppercase tracking-[0.2em]">Scroll</span>
-          <ChevronDown className="w-5 h-5 text-white/25 animate-bounce" />
+          <span className="text-white/30 text-[10px] uppercase tracking-[0.25em]">Scroll</span>
+          <ChevronDown className="w-5 h-5 text-white/30 animate-bounce" />
         </div>
       </div>
 
-      {/* UZBEKISTAN text at bottom */}
+      {/* ===== UZBEKISTAN watermark text ===== */}
       <div
         className="absolute bottom-0 left-0 right-0 z-[8] pointer-events-none overflow-hidden"
-        style={{
-          animation: 'fade-in-up 1.2s 1.5s both',
-        }}
+        style={{ animation: 'fade-in-up 1.2s 1.5s both' }}
       >
         <div
-          className="text-center select-none"
           style={{
+            textAlign: 'center',
             fontSize: 'clamp(4rem, 14vw, 12rem)',
             fontFamily: "'Playfair Display', serif",
             fontWeight: 700,
             lineHeight: 0.85,
             letterSpacing: '0.08em',
             color: 'transparent',
-            WebkitTextStroke: '1px rgba(255,255,255,0.12)',
+            WebkitTextStroke: '1px rgba(255,255,255,0.08)',
             transform: 'translateY(35%)',
           }}
         >
@@ -229,22 +378,55 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Bottom gradient */}
+      {/* Bottom fade */}
       <div
-        className="absolute bottom-0 left-0 right-0 z-[7] pointer-events-none"
-        style={{ height: '200px', background: 'linear-gradient(to top, #FFFFFF 0%, rgba(255,255,255,0.6) 30%, transparent 100%)' }}
+        className="absolute bottom-0 left-0 right-0 z-[9] pointer-events-none"
+        style={{
+          height: '180px',
+          background: 'linear-gradient(to top, #FFFFFF 0%, rgba(255,255,255,0.7) 35%, transparent 100%)',
+        }}
       />
 
+      {/* ===== KEYFRAME ANIMATIONS ===== */}
       <style>{`
-        @keyframes plane-enter {
+        @keyframes plane-fly-in {
           0% {
             opacity: 0;
-            transform: translateX(300px) translateY(100px) scale(0.6);
+            transform: translateX(120vw) translateY(40vh) scale(0.4) rotate(15deg);
+          }
+          60% {
+            opacity: 1;
+          }
+          85% {
+            transform: translateX(-20px) translateY(-10px) scale(1.03) rotate(-10deg);
           }
           100% {
             opacity: 1;
-            transform: translateX(0) translateY(0) scale(1);
+            transform: translateX(0) translateY(0) scale(1) rotate(-8deg);
           }
+        }
+
+        @keyframes plane-float {
+          0%, 100% {
+            transform: translateY(0px) rotate(-8deg);
+          }
+          30% {
+            transform: translateY(-14px) rotate(-6deg);
+          }
+          70% {
+            transform: translateY(-6px) rotate(-10deg);
+          }
+        }
+
+        @keyframes shadow-pulse {
+          0%, 100% { opacity: 0.6; transform: scaleX(1.5) scaleY(0.4); }
+          50% { opacity: 0.3; transform: scaleX(1.8) scaleY(0.3); }
+        }
+
+        @keyframes contrail-appear {
+          0% { opacity: 0; width: 0; }
+          40% { opacity: 1; }
+          100% { opacity: 0.4; }
         }
       `}</style>
     </section>
