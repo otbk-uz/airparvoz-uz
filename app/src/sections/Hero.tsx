@@ -177,69 +177,73 @@ export default function Hero() {
       {/* ===== ENGINE EXHAUST SMOKE ===== */}
       {planeVisible && (
         <>
-          {/* Engine 1 exhaust particles (yaqin motor) */}
-          {[...Array(8)].map((_, i) => (
+          {/* ===== PASTKI MOTOR (yaqin, katta ko'rinadi) ===== */}
+          {[...Array(10)].map((_, i) => (
             <div
               key={`e1-${i}`}
               className="absolute pointer-events-none"
               style={{
-                right: 'clamp(120px, 21vw, 320px)',
-                top: 'clamp(110px, 18vw, 280px)',
-                width: `${14 + i * 4}px`,
-                height: `${14 + i * 4}px`,
+                right: `calc(37% - ${i * 6}px)`,
+                top: `calc(57% + ${i * 3}px)`,
+                width: `${10 + i * 5}px`,
+                height: `${10 + i * 5}px`,
                 borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(200,220,255,0.55) 0%, rgba(180,200,240,0.2) 60%, transparent 100%)',
-                filter: `blur(${3 + i}px)`,
-                animation: `exhaust-puff ${1.2 + i * 0.15}s ease-out ${3.2 + i * 0.18}s infinite`,
-                zIndex: 6,
+                background: `radial-gradient(circle, rgba(220,235,255,${0.6 - i * 0.05}) 0%, rgba(180,200,240,0.15) 60%, transparent 100%)`,
+                filter: `blur(${2 + i * 1.2}px)`,
+                animation: `exhaust-flow ${0.9 + i * 0.1}s ease-out ${3.0 + i * 0.12}s infinite`,
+                zIndex: 8,
               }}
             />
           ))}
 
-          {/* Engine 2 exhaust particles (uzoq motor) */}
+          {/* ===== YUQORI MOTOR (uzoq, kichikroq) ===== */}
           {[...Array(8)].map((_, i) => (
             <div
               key={`e2-${i}`}
               className="absolute pointer-events-none"
               style={{
-                right: 'clamp(140px, 24vw, 370px)',
-                top: 'clamp(140px, 23vw, 355px)',
-                width: `${12 + i * 3}px`,
-                height: `${12 + i * 3}px`,
+                right: `calc(27% - ${i * 5}px)`,
+                top: `calc(46% + ${i * 2}px)`,
+                width: `${7 + i * 4}px`,
+                height: `${7 + i * 4}px`,
                 borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(200,220,255,0.45) 0%, rgba(180,200,240,0.15) 60%, transparent 100%)',
-                filter: `blur(${2 + i}px)`,
-                animation: `exhaust-puff ${1.4 + i * 0.13}s ease-out ${3.5 + i * 0.2}s infinite`,
-                zIndex: 6,
+                background: `radial-gradient(circle, rgba(210,228,255,${0.5 - i * 0.05}) 0%, rgba(180,200,240,0.12) 60%, transparent 100%)`,
+                filter: `blur(${1.5 + i * 1}px)`,
+                animation: `exhaust-flow ${1.0 + i * 0.1}s ease-out ${3.3 + i * 0.13}s infinite`,
+                zIndex: 8,
               }}
             />
           ))}
 
-          {/* Long trailing contrail from engines */}
+          {/* Pastki motor uzun izi */}
           <div
-            className="absolute z-[5] pointer-events-none"
+            className="absolute pointer-events-none"
             style={{
-              right: 'clamp(120px, 21vw, 320px)',
-              top: 'clamp(118px, 19vw, 292px)',
-              width: 'clamp(80px, 14vw, 220px)',
-              height: '6px',
-              background: 'linear-gradient(to right, rgba(200,220,255,0.5) 0%, rgba(200,220,255,0.15) 60%, transparent 100%)',
-              borderRadius: '999px',
-              filter: 'blur(3px)',
-              animation: 'contrail-trail 2s 3.2s both',
-            }}
-          />
-          <div
-            className="absolute z-[5] pointer-events-none"
-            style={{
-              right: 'clamp(140px, 24vw, 370px)',
-              top: 'clamp(148px, 24vw, 368px)',
-              width: 'clamp(60px, 10vw, 160px)',
-              height: '4px',
-              background: 'linear-gradient(to right, rgba(200,220,255,0.4) 0%, rgba(200,220,255,0.1) 60%, transparent 100%)',
+              right: '20%',
+              top: '58%',
+              width: 'clamp(60px, 12vw, 190px)',
+              height: '8px',
+              background: 'linear-gradient(to right, rgba(200,220,255,0.55) 0%, rgba(200,220,255,0.1) 70%, transparent 100%)',
               borderRadius: '999px',
               filter: 'blur(4px)',
-              animation: 'contrail-trail 2s 3.5s both',
+              animation: 'contrail-trail 1.8s 3.0s both',
+              zIndex: 7,
+            }}
+          />
+
+          {/* Yuqori motor uzun izi */}
+          <div
+            className="absolute pointer-events-none"
+            style={{
+              right: '13%',
+              top: '47%',
+              width: 'clamp(40px, 8vw, 130px)',
+              height: '5px',
+              background: 'linear-gradient(to right, rgba(200,220,255,0.4) 0%, rgba(200,220,255,0.08) 70%, transparent 100%)',
+              borderRadius: '999px',
+              filter: 'blur(3px)',
+              animation: 'contrail-trail 1.8s 3.3s both',
+              zIndex: 7,
             }}
           />
         </>
@@ -511,6 +515,20 @@ export default function Hero() {
           }
           100% {
             transform: translate(clamp(30px, 6vw, 100px), calc(-1 * clamp(15px, 3vw, 50px))) scale(2.5);
+            opacity: 0;
+          }
+        }
+
+        @keyframes exhaust-flow {
+          0% {
+            transform: translate(0, 0) scale(0.5);
+            opacity: 0.8;
+          }
+          50% {
+            opacity: 0.3;
+          }
+          100% {
+            transform: translate(clamp(40px, 8vw, 130px), clamp(8px, 1.5vw, 25px)) scale(3);
             opacity: 0;
           }
         }
