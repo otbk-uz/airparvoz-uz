@@ -314,18 +314,6 @@ export default function Hero() {
         className="relative z-10 flex flex-col items-center justify-center h-full px-6 text-center"
         style={{ paddingTop: '64px' }}
       >
-        {/* Badge */}
-        <div
-          className="mb-5 flex items-center gap-2 px-4 py-1.5 rounded-full border"
-          style={{
-            background: 'rgba(20,184,166,0.12)',
-            borderColor: 'rgba(20,184,166,0.3)',
-            animation: 'fade-in-up 0.8s 0.3s both',
-          }}
-        >
-          <span className="w-1.5 h-1.5 rounded-full bg-[#14B8A6] animate-pulse" />
-          <span className="text-[#14B8A6] text-xs font-semibold tracking-widest uppercase">Uzbekistan Airways</span>
-        </div>
 
         {/* Main Title */}
         <h1
@@ -350,20 +338,6 @@ export default function Hero() {
           Aviabiletlar, mehmonxonalar, gidlar va ekskursiyalar — barchasi bir joyda
         </p>
 
-        {/* Banner */}
-        <div
-          className="mt-5 px-5 py-2.5 rounded-2xl max-w-2xl"
-          style={{
-            background: 'rgba(20,184,166,0.1)',
-            backdropFilter: 'blur(12px)',
-            border: '1px solid rgba(20,184,166,0.25)',
-            animation: 'fade-in-up 0.8s 1.0s both',
-          }}
-        >
-          <p className="text-[#5eead4] text-sm font-medium">
-            {t('bannerText')}
-          </p>
-        </div>
 
         {/* Search Bar */}
         <div
