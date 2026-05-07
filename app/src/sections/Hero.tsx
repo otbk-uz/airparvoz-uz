@@ -175,7 +175,7 @@ export default function Hero() {
           }}
         />
         <img
-          src="/images/plane_uzb.png"
+          src="/images/photo_2026-05-07_16-27-30.png"
           alt="Uzbekistan Airways Boeing 787"
           className="w-full h-auto"
           style={{
