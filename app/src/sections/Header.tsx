@@ -55,10 +55,24 @@ export default function Header() {
     { id: 'hotels', label: t('hotelsTitle') },
     { id: 'tour-firms', label: t('tourFirmsTitle') },
     { id: 'virtual-tours', label: t('virtualToursTitle') },
-    { id: 'users', label: t('usersCount'), isStat: true },
-    { id: 'reviews', label: t('reviews') },
-    { id: 'ratings', label: t('ratings') },
+    { id: 'guides', label: t('guidesTitle') },
   ];
+
+  const handleHeaderSearch = () => {
+    const q = searchQuery.toLowerCase().trim();
+    if (!q) return;
+    const map: { keywords: string[]; id: string }[] = [
+      { keywords: ['avia', 'bilet', 'parvoz', 'chipta', 'uchish', 'reys', 'samalyot'], id: 'transport' },
+      { keywords: ['mehmonxona', 'hotel', 'hostel', 'yashash', 'room'], id: 'hotels' },
+      { keywords: ['tur', 'firma', 'sayohat', 'travel', 'tour', 'dam olish'], id: 'tour-firms' },
+      { keywords: ['360', 'virtual', 'panorama', 'onlayn'], id: 'virtual-tours' },
+      { keywords: ['gid', 'guide', 'volontyor', 'hamroh'], id: 'guides' },
+      { keywords: ['samarqand', 'buxoro', 'xiva', 'toshkent', 'shahar'], id: 'transport' },
+    ];
+    const matched = map.find(s => s.keywords.some(k => q.includes(k)));
+    handleNavClick(matched?.id || 'transport');
+    setSearchQuery('');
+  };
 
   const isHome = currentPage === 'home';
 
@@ -81,7 +95,7 @@ export default function Header() {
               <button
                 key={link.id}
                 onClick={() => handleNavClick(link.id)}
-                className={`text-[13px] font-medium transition-colors hover:text-[#14B8A6] whitespace-nowrap ${link.isStat ? 'text-[#14B8A6]' : (scrolled ? 'text-[#5A6578]' : 'text-white/80')}`}
+                className={`text-[13px] font-medium transition-colors hover:text-[#14B8A6] whitespace-nowrap ${scrolled ? 'text-[#5A6578]' : 'text-white/80'}`}
               >
                 {link.label}
               </button>
@@ -98,6 +112,7 @@ export default function Header() {
                 className={`bg-transparent border-none outline-none text-xs w-24 focus:w-40 transition-all ${scrolled ? 'text-slate-900 placeholder:text-slate-400' : 'text-white placeholder:text-white/40'}`}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleHeaderSearch()}
               />
             </div>
           </div>
@@ -188,6 +203,7 @@ export default function Header() {
                   className="bg-transparent border-none outline-none text-sm text-slate-900 w-full"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleHeaderSearch()}
                 />
               </div>
             </div>

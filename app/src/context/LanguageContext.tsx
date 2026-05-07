@@ -129,7 +129,7 @@ export const translations: Translations = {
   // Footer
   footerDesc: { uz: "O‘zbekistonning eng yaxshi all-in-one turizm platformasi", ru: 'Лучшая all-in-one туристическая платформа Узбекистана', en: "Uzbekistan's best all-in-one tourism platform" },
   quickLinks: { uz: 'Tez havolalar', ru: 'Быстрые ссылки', en: 'Quick Links' },
-  about: { uz: 'Biz haqimizda', ru: 'О nas', en: 'About' },
+  about: { uz: 'Biz haqimizda', ru: 'О нас', en: 'About' },
   contact: { uz: 'Aloqa', ru: 'Контакты', en: 'Contact' },
   privacy: { uz: 'Maxfiylik', ru: 'Конфиденциальность', en: 'Privacy' },
   allRights: { uz: 'Barcha huquqlar himoyalangan', ru: 'Все права защищены', en: 'All rights reserved' },
