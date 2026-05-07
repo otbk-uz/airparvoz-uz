@@ -84,15 +84,15 @@ export default function Hero() {
       <div
         className="plane-layer absolute z-[6] pointer-events-none"
         style={{
-          right: '-5%',
-          top: '8%',
-          width: 'clamp(400px, 55vw, 900px)',
+          right: '5%',
+          top: '12%',
+          width: 'clamp(300px, 40vw, 600px)',
           animation: 'plane-enter 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both',
         }}
       >
         <img
-          src="/images/plane-flying.png"
-          alt="Airplane"
+          src="/images/plane-uzb.png"
+          alt="Uzbekistan Airways"
           className="w-full h-auto"
           style={{
             filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.3))',
@@ -152,12 +152,25 @@ export default function Hero() {
           Aviabiletlar, mehmonxonalar, gidlar va ekskursiyalar — barchasi bir joyda
         </p>
 
+        {/* Banner / Meme */}
+        <div 
+          className="mt-6 px-6 py-3 bg-[#14B8A6]/10 backdrop-blur-md border border-[#14B8A6]/20 rounded-2xl max-w-2xl"
+          style={{ animation: 'fade-in-up 0.8s 1.0s both' }}
+        >
+          <p className="text-[#14B8A6] text-sm font-medium">
+            {t('bannerText')}
+          </p>
+        </div>
+
         {/* CTA */}
-        <div className="flex flex-col sm:flex-row gap-3 mt-8" style={{ animation: 'fade-in-up 0.8s 1.1s both' }}>
+        <div className="flex flex-col sm:flex-row gap-3 mt-8" style={{ animation: 'fade-in-up 0.8s 1.2s both' }}>
           <button onClick={scrollToContent} className="btn-primary flex items-center gap-2">
             {t('heroCta')}
           </button>
-          <button onClick={scrollToContent} className="btn-secondary flex items-center gap-2">
+          <button 
+            onClick={scrollToContent} 
+            className="flex items-center gap-2 px-8 py-3 rounded-full bg-orange-500 text-white font-semibold hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/30"
+          >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
             360° ko'rish
           </button>

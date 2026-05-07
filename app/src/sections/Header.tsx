@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Globe, ChevronDown, Menu, X, User, Sparkles } from 'lucide-react';
+import { Globe, ChevronDown, Menu, X, User, Sparkles, Search } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { useApp } from '@/context/AppContext';
 import type { Language } from '@/context/LanguageContext';
@@ -10,6 +10,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [showLangMenu, setShowLangMenu] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 60);
@@ -54,6 +55,9 @@ export default function Header() {
     { id: 'hotels', label: t('hotelsTitle') },
     { id: 'tour-firms', label: t('tourFirmsTitle') },
     { id: 'virtual-tours', label: t('virtualToursTitle') },
+    { id: 'users', label: t('usersCount'), isStat: true },
+    { id: 'reviews', label: t('reviews') },
+    { id: 'ratings', label: t('ratings') },
   ];
 
   const isHome = currentPage === 'home';
@@ -62,7 +66,7 @@ export default function Header() {
     <>
       {/* Desktop Glassmorphism Nav */}
       <header className={`fixed top-0 left-0 right-0 z-50 hidden lg:flex justify-center pt-4 px-4 transition-all duration-500 ${!isHome ? 'opacity-0 pointer-events-none' : ''}`}>
-        <nav className={`glass-nav rounded-full px-6 py-2.5 flex items-center gap-8 max-w-4xl w-full transition-all duration-500 ${scrolled ? 'glass-nav-solid !rounded-none !max-w-none !mt-0 !pt-3 !pb-3 !px-8' : ''}`}>
+        <nav className={`glass-nav rounded-full px-6 py-2.5 flex items-center gap-6 max-w-[95%] w-full transition-all duration-500 ${scrolled ? 'glass-nav-solid !rounded-none !max-w-none !mt-0 !pt-3 !pb-3 !px-8 shadow-lg' : ''}`}>
           {/* Logo */}
           <button onClick={() => handleNavClick('home')} className="flex items-center gap-2 flex-shrink-0">
             <Sparkles className="w-5 h-5 text-[#14B8A6]" />
@@ -72,16 +76,30 @@ export default function Header() {
           </button>
 
           {/* Center Nav */}
-          <div className="flex-1 flex items-center justify-center gap-6">
+          <div className="flex-1 flex items-center justify-center gap-5 overflow-x-auto no-scrollbar">
             {navLinks.map((link) => (
               <button
                 key={link.id}
                 onClick={() => handleNavClick(link.id)}
-                className={`text-sm font-medium transition-colors hover:text-[#14B8A6] ${scrolled ? 'text-[#5A6578]' : 'text-white/80'}`}
+                className={`text-[13px] font-medium transition-colors hover:text-[#14B8A6] whitespace-nowrap ${link.isStat ? 'text-[#14B8A6]' : (scrolled ? 'text-[#5A6578]' : 'text-white/80')}`}
               >
                 {link.label}
               </button>
             ))}
+          </div>
+
+          {/* Search Panel */}
+          <div className="relative group flex-shrink-0">
+            <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-300 ${scrolled ? 'bg-slate-50 border-slate-200' : 'bg-white/10 border-white/20'}`}>
+              <Search className={`w-3.5 h-3.5 ${scrolled ? 'text-slate-400' : 'text-white/50'}`} />
+              <input
+                type="text"
+                placeholder={t('searchPlaceholder')}
+                className={`bg-transparent border-none outline-none text-xs w-24 focus:w-40 transition-all ${scrolled ? 'text-slate-900 placeholder:text-slate-400' : 'text-white placeholder:text-white/40'}`}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
           </div>
 
           {/* Right side */}
@@ -113,12 +131,20 @@ export default function Header() {
               )}
             </div>
 
+            {/* Start Button (Static Color) */}
+            <button
+              onClick={() => handleNavClick('home')}
+              className="px-5 py-2 rounded-full text-sm font-semibold bg-[#14B8A6] text-white hover:bg-[#0D9488] shadow-lg shadow-[#14B8A6]/20 transition-all active:scale-95"
+            >
+              {t('start')}
+            </button>
+
             {/* Login / User */}
             <button
               onClick={handleLoginClick}
               className={`px-5 py-2 rounded-full text-sm font-semibold transition-all ${
                 isLoggedIn
-                  ? 'bg-[#14B8A6] text-white hover:bg-[#0D9488]'
+                  ? 'bg-slate-800 text-white'
                   : scrolled
                   ? 'bg-[#0A1628] text-white hover:bg-[#1e293b]'
                   : 'bg-white/15 text-white hover:bg-white/25'

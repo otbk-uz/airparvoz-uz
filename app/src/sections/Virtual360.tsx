@@ -191,7 +191,7 @@ export default function Virtual360() {
       <section ref={sectionRef} id="virtual-tours" className="relative w-full py-20 sm:py-28 bg-[#0A1628]">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
           <div className="text-center mb-14">
-            <span className="text-[11px] uppercase tracking-[0.2em] text-[#14B8A6] font-semibold">360°</span>
+            <span className="text-[11px] uppercase tracking-[0.2em] text-orange-500 font-bold">360°</span>
             <h2 className="mt-3 text-white font-bold leading-[1.05]" style={{ fontSize: 'clamp(1.75rem, 4vw, 3.5rem)' }}>
               <span style={{ fontFamily: "'Playfair Display', serif" }} className="italic font-normal">{t('virtualToursTitle')}</span>
             </h2>
@@ -210,7 +210,7 @@ export default function Virtual360() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
                 {/* 360 badge */}
-                <div className="absolute top-4 left-4 px-3 py-1.5 bg-[#14B8A6] text-white text-xs font-bold rounded-full flex items-center gap-1.5 animate-pulse">
+                <div className="absolute top-4 left-4 px-3 py-1.5 bg-orange-500 text-white text-xs font-bold rounded-full flex items-center gap-1.5 animate-pulse shadow-lg shadow-orange-500/40">
                   <Compass className="w-3.5 h-3.5" />
                   360°
                 </div>
