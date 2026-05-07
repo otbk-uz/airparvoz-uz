@@ -84,9 +84,9 @@ export default function Hero() {
       <div
         className="plane-layer absolute z-[6] pointer-events-none"
         style={{
-          right: '2%',
-          top: '15%',
-          width: 'clamp(250px, 35vw, 500px)',
+          right: '0%',
+          top: '10%',
+          width: 'clamp(300px, 45vw, 700px)',
           animation: 'plane-enter 3s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both',
         }}
       >
@@ -95,8 +95,8 @@ export default function Hero() {
           alt="Uzbekistan Airways"
           className="w-full h-auto"
           style={{
-            filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.2))',
-            mixBlendMode: 'multiply', // Oq fonni yo'qotadi
+            filter: 'drop-shadow(0 20px 50px rgba(0,0,0,0.2))',
+            mixBlendMode: 'multiply',
           }}
         />
       </div>
