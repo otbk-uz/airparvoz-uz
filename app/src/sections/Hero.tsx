@@ -8,7 +8,7 @@ export default function Hero() {
   const planeRef = useRef<HTMLDivElement>(null);
   const layersRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number>(0);
-  const mouseRef = useRef({ x: 0, y: 0 });
+
   const [planeVisible, setPlaneVisible] = useState(false);
 
   // Show plane after brief delay (dramatic reveal)
@@ -17,43 +17,16 @@ export default function Hero() {
     return () => clearTimeout(t);
   }, []);
 
-  // Parallax on scroll + mouse tracking
+  // Scroll-driven parallax only
   useEffect(() => {
     const handleScroll = () => {
       if (!layersRef.current) return;
       const scrollY = window.scrollY;
-
-      // Background parallax layers
       const layers = layersRef.current.querySelectorAll<HTMLElement>('.parallax-bg-layer');
       layers.forEach((layer, i) => {
-        const speeds = [0.06, 0.14, 0.22];
+        const speeds = [0.05, 0.12, 0.20, 0.28];
         layer.style.transform = `translateY(${scrollY * speeds[i]}px)`;
       });
-    };
-
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!heroRef.current) return;
-      const rect = heroRef.current.getBoundingClientRect();
-      mouseRef.current = {
-        x: (e.clientX - rect.left) / rect.width - 0.5,
-        y: (e.clientY - rect.top) / rect.height - 0.5,
-      };
-    };
-
-    let animId: number;
-    const animateMouseParallax = () => {
-      const { x, y } = mouseRef.current;
-      if (layersRef.current) {
-        const layers = layersRef.current.querySelectorAll<HTMLElement>('.parallax-bg-layer');
-        layers.forEach((layer, i) => {
-          const depth = [8, 14, 20][i];
-          const currentTransform = layer.style.transform || '';
-          // Only add mouse offset (scroll handled separately)
-          layer.style.transform = currentTransform.replace(/rotateX\([^)]+\)|rotateY\([^)]+\)/g, '')
-            + ` rotateY(${x * depth * 0.2}deg) rotateX(${-y * depth * 0.1}deg)`;
-        });
-      }
-      animId = requestAnimationFrame(animateMouseParallax);
     };
 
     const onScroll = () => {
@@ -61,14 +34,9 @@ export default function Hero() {
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    animId = requestAnimationFrame(animateMouseParallax);
-
     return () => {
       window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('mousemove', handleMouseMove);
       cancelAnimationFrame(rafRef.current);
-      cancelAnimationFrame(animId);
     };
   }, []);
 
@@ -207,12 +175,12 @@ export default function Hero() {
           }}
         />
         <img
-          src="/images/plane_uzb.png"
+          src="/images/new_plane.png"
           alt="Uzbekistan Airways Boeing 787"
           className="w-full h-auto"
           style={{
             filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.4)) drop-shadow(0 0 20px rgba(20,184,166,0.15))',
-            transform: 'scaleX(-1) rotate(-8deg)',
+            transform: 'rotate(-8deg)',
           }}
         />
       </div>
