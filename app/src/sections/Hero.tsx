@@ -212,39 +212,72 @@ export default function Hero() {
           }}
         />
 
-        {/* ===== MOTORLARDAN CHIQADIGAN TUTUN ===== */}
-        {/* Pastki motor (katta, yaqin) — rasmning ~72% chap, ~82% pastda */}
-        {[...Array(6)].map((_, i) => (
+        {/* ===== MOTORLARDAN CHIQADIGAN OQ TUTUN ===== */}
+
+        {/* ======= PASTKI MOTOR — QALIN OQ TUTUN ======= */}
+        {/* Doimiy oq tutun oqimi */}
+        <div style={{
+          position: 'absolute', left: '72%', top: '80%',
+          width: '80px', height: '12px',
+          background: 'linear-gradient(to right, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.4) 40%, transparent 100%)',
+          borderRadius: '999px', filter: 'blur(4px)',
+          animation: 'smoke-stream 0.6s ease-out 3.2s infinite',
+        }}/>
+        <div style={{
+          position: 'absolute', left: '74%', top: '82%',
+          width: '60px', height: '8px',
+          background: 'linear-gradient(to right, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.2) 50%, transparent 100%)',
+          borderRadius: '999px', filter: 'blur(5px)',
+          animation: 'smoke-stream 0.8s ease-out 3.3s infinite',
+        }}/>
+        {/* Tutun bulutchalari */}
+        {[...Array(12)].map((_, i) => (
           <div
-            key={`e1-${i}`}
+            key={`s1-${i}`}
             style={{
               position: 'absolute',
-              left: `${72 + i * 2}%`,
-              top: `${82 + i * 1.5}%`,
-              width: `${8 + i * 4}px`,
-              height: `${8 + i * 4}px`,
+              left: `${72 + i * 1.5}%`,
+              top: `${80 + (i % 3) * 1.2}%`,
+              width: `${12 + i * 3}px`,
+              height: `${12 + i * 3}px`,
               borderRadius: '50%',
-              background: `radial-gradient(circle, rgba(220,240,255,${0.6 - i * 0.08}) 0%, transparent 70%)`,
-              filter: `blur(${2 + i}px)`,
-              animation: `exhaust-flow ${0.8 + i * 0.12}s ease-out ${3.2 + i * 0.15}s infinite`,
+              background: `radial-gradient(circle, rgba(255,255,255,${0.85 - i * 0.06}) 0%, rgba(255,255,255,${0.3 - i * 0.02}) 50%, transparent 80%)`,
+              filter: `blur(${3 + i * 0.8}px)`,
+              animation: `white-smoke ${1.0 + i * 0.08}s ease-out ${3.0 + i * 0.1}s infinite`,
             }}
           />
         ))}
 
-        {/* Yuqori motor (kichik, uzoq) — rasmning ~55% chap, ~62% pastda */}
-        {[...Array(5)].map((_, i) => (
+        {/* ======= YUQORI MOTOR — QALIN OQ TUTUN ======= */}
+        {/* Doimiy oq tutun oqimi */}
+        <div style={{
+          position: 'absolute', left: '55%', top: '60%',
+          width: '55px', height: '8px',
+          background: 'linear-gradient(to right, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.3) 40%, transparent 100%)',
+          borderRadius: '999px', filter: 'blur(3px)',
+          animation: 'smoke-stream 0.7s ease-out 3.5s infinite',
+        }}/>
+        <div style={{
+          position: 'absolute', left: '57%', top: '62%',
+          width: '40px', height: '6px',
+          background: 'linear-gradient(to right, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.15) 50%, transparent 100%)',
+          borderRadius: '999px', filter: 'blur(4px)',
+          animation: 'smoke-stream 0.9s ease-out 3.6s infinite',
+        }}/>
+        {/* Tutun bulutchalari */}
+        {[...Array(10)].map((_, i) => (
           <div
-            key={`e2-${i}`}
+            key={`s2-${i}`}
             style={{
               position: 'absolute',
-              left: `${55 + i * 2}%`,
-              top: `${62 + i * 1}%`,
-              width: `${6 + i * 3}px`,
-              height: `${6 + i * 3}px`,
+              left: `${55 + i * 1.5}%`,
+              top: `${60 + (i % 3) * 1}%`,
+              width: `${10 + i * 2.5}px`,
+              height: `${10 + i * 2.5}px`,
               borderRadius: '50%',
-              background: `radial-gradient(circle, rgba(210,230,255,${0.5 - i * 0.08}) 0%, transparent 70%)`,
-              filter: `blur(${1.5 + i}px)`,
-              animation: `exhaust-flow ${0.9 + i * 0.1}s ease-out ${3.4 + i * 0.15}s infinite`,
+              background: `radial-gradient(circle, rgba(255,255,255,${0.75 - i * 0.06}) 0%, rgba(255,255,255,${0.25 - i * 0.02}) 50%, transparent 80%)`,
+              filter: `blur(${2.5 + i * 0.7}px)`,
+              animation: `white-smoke ${1.1 + i * 0.08}s ease-out ${3.3 + i * 0.12}s infinite`,
             }}
           />
         ))}
@@ -457,49 +490,33 @@ export default function Hero() {
           }
         }
 
-        @keyframes shadow-pulse {
-          0%, 100% { opacity: 0.6; transform: scaleX(1.5) scaleY(0.4); }
-          50% { opacity: 0.3; transform: scaleX(1.8) scaleY(0.3); }
-        }
-
-        @keyframes contrail-appear {
-          0% { opacity: 0; width: 0; }
-          40% { opacity: 1; }
-          100% { opacity: 0.4; }
-        }
-
-        @keyframes exhaust-puff {
-          0% {
-            transform: translate(0, 0) scale(0.3);
-            opacity: 0.7;
-          }
-          40% {
-            opacity: 0.4;
-          }
-          100% {
-            transform: translate(clamp(30px, 6vw, 100px), calc(-1 * clamp(15px, 3vw, 50px))) scale(2.5);
-            opacity: 0;
-          }
-        }
-
-        @keyframes exhaust-flow {
+        @keyframes white-smoke {
           0% {
             transform: translate(0, 0) scale(0.5);
-            opacity: 0.8;
+            opacity: 0.9;
           }
-          50% {
-            opacity: 0.3;
+          30% {
+            opacity: 0.6;
           }
           100% {
-            transform: translate(clamp(40px, 8vw, 130px), clamp(8px, 1.5vw, 25px)) scale(3);
+            transform: translate(40px, 8px) scale(3.5);
             opacity: 0;
           }
         }
 
-        @keyframes contrail-trail {
-          0% { opacity: 0; transform: scaleX(0); transform-origin: left; }
-          30% { opacity: 0.6; }
-          100% { opacity: 0.3; transform: scaleX(1); transform-origin: left; }
+        @keyframes smoke-stream {
+          0% {
+            transform: scaleX(0.3) scaleY(1);
+            opacity: 0.9;
+          }
+          50% {
+            opacity: 0.5;
+            transform: scaleX(1.2) scaleY(1.5);
+          }
+          100% {
+            transform: scaleX(2) scaleY(0.6);
+            opacity: 0;
+          }
         }
       `}</style>
     </section>
