@@ -91,8 +91,8 @@ export default function Hero() {
     };
   }, []);
 
-  const scrollToContent = () => {
-    document.getElementById('transport')?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToId = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -371,13 +371,13 @@ export default function Hero() {
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-3 mt-6" style={{ animation: 'fade-in-up 0.8s 1.3s both' }}>
           <button
-            onClick={scrollToContent}
+            onClick={() => scrollToId('transport')}
             className="flex items-center gap-2 px-10 py-3.5 rounded-full bg-[#14B8A6] hover:bg-[#0D9488] text-white font-semibold transition-all shadow-lg shadow-[#14B8A6]/30 hover:shadow-[#14B8A6]/50 hover:-translate-y-1 active:scale-95"
           >
             {t('heroCta')}
           </button>
           <button
-            onClick={scrollToContent}
+            onClick={() => scrollToId('virtual-tours')}
             className="flex items-center gap-2 px-10 py-3.5 rounded-full text-white font-semibold transition-all hover:-translate-y-1 active:scale-95"
             style={{
               background: 'rgba(255,255,255,0.1)',
