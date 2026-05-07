@@ -84,9 +84,9 @@ export default function Hero() {
       <div
         className="plane-layer absolute z-[6] pointer-events-none"
         style={{
-          right: '0%',
-          top: '10%',
-          width: 'clamp(300px, 45vw, 700px)',
+          right: '-5%',
+          top: '12%',
+          width: 'clamp(350px, 50vw, 800px)',
           animation: 'plane-enter 3s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both',
         }}
       >
@@ -95,8 +95,9 @@ export default function Hero() {
           alt="Uzbekistan Airways"
           className="w-full h-auto"
           style={{
-            filter: 'drop-shadow(0 20px 50px rgba(0,0,0,0.2))',
-            mixBlendMode: 'multiply',
+            filter: 'contrast(1.1) brightness(1.05)',
+            mixBlendMode: 'multiply', 
+            transform: 'scaleX(-1) rotate(-5deg)', // Chapga qayiradi
           }}
         />
       </div>
@@ -239,11 +240,11 @@ export default function Hero() {
         @keyframes plane-enter {
           0% {
             opacity: 0;
-            transform: translateX(400px) translateY(-50px) rotate(-5deg) scale(0.6);
+            transform: translateX(300px) translateY(100px) scale(0.6);
           }
           100% {
             opacity: 1;
-            transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+            transform: translateX(0) translateY(0) scale(1);
           }
         }
       `}</style>
