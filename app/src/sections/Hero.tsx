@@ -174,82 +174,7 @@ export default function Hero() {
         />
       </div>
 
-      {/* ===== ENGINE EXHAUST SMOKE ===== */}
-      {planeVisible && (
-        <>
-          {/* ===== PASTKI MOTOR (yaqin, katta ko'rinadi) ===== */}
-          {[...Array(10)].map((_, i) => (
-            <div
-              key={`e1-${i}`}
-              className="absolute pointer-events-none"
-              style={{
-                right: `calc(37% - ${i * 6}px)`,
-                top: `calc(57% + ${i * 3}px)`,
-                width: `${10 + i * 5}px`,
-                height: `${10 + i * 5}px`,
-                borderRadius: '50%',
-                background: `radial-gradient(circle, rgba(220,235,255,${0.6 - i * 0.05}) 0%, rgba(180,200,240,0.15) 60%, transparent 100%)`,
-                filter: `blur(${2 + i * 1.2}px)`,
-                animation: `exhaust-flow ${0.9 + i * 0.1}s ease-out ${3.0 + i * 0.12}s infinite`,
-                zIndex: 8,
-              }}
-            />
-          ))}
-
-          {/* ===== YUQORI MOTOR (uzoq, kichikroq) ===== */}
-          {[...Array(8)].map((_, i) => (
-            <div
-              key={`e2-${i}`}
-              className="absolute pointer-events-none"
-              style={{
-                right: `calc(27% - ${i * 5}px)`,
-                top: `calc(46% + ${i * 2}px)`,
-                width: `${7 + i * 4}px`,
-                height: `${7 + i * 4}px`,
-                borderRadius: '50%',
-                background: `radial-gradient(circle, rgba(210,228,255,${0.5 - i * 0.05}) 0%, rgba(180,200,240,0.12) 60%, transparent 100%)`,
-                filter: `blur(${1.5 + i * 1}px)`,
-                animation: `exhaust-flow ${1.0 + i * 0.1}s ease-out ${3.3 + i * 0.13}s infinite`,
-                zIndex: 8,
-              }}
-            />
-          ))}
-
-          {/* Pastki motor uzun izi */}
-          <div
-            className="absolute pointer-events-none"
-            style={{
-              right: '20%',
-              top: '58%',
-              width: 'clamp(60px, 12vw, 190px)',
-              height: '8px',
-              background: 'linear-gradient(to right, rgba(200,220,255,0.55) 0%, rgba(200,220,255,0.1) 70%, transparent 100%)',
-              borderRadius: '999px',
-              filter: 'blur(4px)',
-              animation: 'contrail-trail 1.8s 3.0s both',
-              zIndex: 7,
-            }}
-          />
-
-          {/* Yuqori motor uzun izi */}
-          <div
-            className="absolute pointer-events-none"
-            style={{
-              right: '13%',
-              top: '47%',
-              width: 'clamp(40px, 8vw, 130px)',
-              height: '5px',
-              background: 'linear-gradient(to right, rgba(200,220,255,0.4) 0%, rgba(200,220,255,0.08) 70%, transparent 100%)',
-              borderRadius: '999px',
-              filter: 'blur(3px)',
-              animation: 'contrail-trail 1.8s 3.3s both',
-              zIndex: 7,
-            }}
-          />
-        </>
-      )}
-
-      {/* ===== ANIMATED PLANE ===== */}
+      {/* ===== ANIMATED PLANE + ENGINE EXHAUST ===== */}
       <div
         ref={planeRef}
         className="plane-layer absolute z-[7] pointer-events-none"
@@ -273,9 +198,10 @@ export default function Hero() {
             background: 'radial-gradient(ellipse, rgba(0,0,0,0.25) 0%, transparent 70%)',
             filter: 'blur(8px)',
             transform: 'scaleX(1.5) scaleY(0.4)',
-
           }}
         />
+
+        {/* Plane image */}
         <img
           src="/images/photo_2026-05-07_16-27-30.png"
           alt="Uzbekistan Airways Boeing 787"
@@ -285,6 +211,43 @@ export default function Hero() {
             transform: 'rotate(-8deg)',
           }}
         />
+
+        {/* ===== MOTORLARDAN CHIQADIGAN TUTUN ===== */}
+        {/* Pastki motor (katta, yaqin) — rasmning ~72% chap, ~82% pastda */}
+        {[...Array(6)].map((_, i) => (
+          <div
+            key={`e1-${i}`}
+            style={{
+              position: 'absolute',
+              left: `${72 + i * 2}%`,
+              top: `${82 + i * 1.5}%`,
+              width: `${8 + i * 4}px`,
+              height: `${8 + i * 4}px`,
+              borderRadius: '50%',
+              background: `radial-gradient(circle, rgba(220,240,255,${0.6 - i * 0.08}) 0%, transparent 70%)`,
+              filter: `blur(${2 + i}px)`,
+              animation: `exhaust-flow ${0.8 + i * 0.12}s ease-out ${3.2 + i * 0.15}s infinite`,
+            }}
+          />
+        ))}
+
+        {/* Yuqori motor (kichik, uzoq) — rasmning ~55% chap, ~62% pastda */}
+        {[...Array(5)].map((_, i) => (
+          <div
+            key={`e2-${i}`}
+            style={{
+              position: 'absolute',
+              left: `${55 + i * 2}%`,
+              top: `${62 + i * 1}%`,
+              width: `${6 + i * 3}px`,
+              height: `${6 + i * 3}px`,
+              borderRadius: '50%',
+              background: `radial-gradient(circle, rgba(210,230,255,${0.5 - i * 0.08}) 0%, transparent 70%)`,
+              filter: `blur(${1.5 + i}px)`,
+              animation: `exhaust-flow ${0.9 + i * 0.1}s ease-out ${3.4 + i * 0.15}s infinite`,
+            }}
+          />
+        ))}
       </div>
 
       {/* ===== VIGNETTE ===== */}
