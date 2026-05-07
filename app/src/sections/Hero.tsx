@@ -91,13 +91,12 @@ export default function Hero() {
         }}
       >
         <img
-          src="/images/plane_uzb.jpg"
+          src="/images/plane_uzb.png"
           alt="Uzbekistan Airways"
           className="w-full h-auto"
           style={{
-            filter: 'contrast(1.1) brightness(1.05)',
-            mixBlendMode: 'multiply', 
-            transform: 'scaleX(-1) rotate(-5deg)', // Chapga qayiradi
+            filter: 'drop-shadow(0 20px 50px rgba(0,0,0,0.3))',
+            transform: 'scaleX(-1) rotate(-5deg)',
           }}
         />
       </div>
