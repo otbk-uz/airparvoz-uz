@@ -174,36 +174,75 @@ export default function Hero() {
         />
       </div>
 
-      {/* ===== PLANE CONTRAIL (smoke trail) ===== */}
+      {/* ===== ENGINE EXHAUST SMOKE ===== */}
       {planeVisible && (
-        <div
-          className="absolute z-[5] pointer-events-none"
-          style={{
-            right: '35%',
-            top: '22%',
-            width: 'clamp(150px, 25vw, 400px)',
-            height: '3px',
-            background: 'linear-gradient(to left, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.0) 100%)',
-            animation: 'contrail-appear 2s 1.2s both',
-            borderRadius: '999px',
-            filter: 'blur(2px)',
-          }}
-        />
-      )}
-      {planeVisible && (
-        <div
-          className="absolute z-[5] pointer-events-none"
-          style={{
-            right: '34%',
-            top: '24%',
-            width: 'clamp(100px, 18vw, 280px)',
-            height: '2px',
-            background: 'linear-gradient(to left, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.0) 100%)',
-            animation: 'contrail-appear 2s 1.4s both',
-            borderRadius: '999px',
-            filter: 'blur(3px)',
-          }}
-        />
+        <>
+          {/* Engine 1 exhaust particles (yaqin motor) */}
+          {[...Array(8)].map((_, i) => (
+            <div
+              key={`e1-${i}`}
+              className="absolute pointer-events-none"
+              style={{
+                right: 'clamp(120px, 21vw, 320px)',
+                top: 'clamp(110px, 18vw, 280px)',
+                width: `${14 + i * 4}px`,
+                height: `${14 + i * 4}px`,
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(200,220,255,0.55) 0%, rgba(180,200,240,0.2) 60%, transparent 100%)',
+                filter: `blur(${3 + i}px)`,
+                animation: `exhaust-puff ${1.2 + i * 0.15}s ease-out ${3.2 + i * 0.18}s infinite`,
+                zIndex: 6,
+              }}
+            />
+          ))}
+
+          {/* Engine 2 exhaust particles (uzoq motor) */}
+          {[...Array(8)].map((_, i) => (
+            <div
+              key={`e2-${i}`}
+              className="absolute pointer-events-none"
+              style={{
+                right: 'clamp(140px, 24vw, 370px)',
+                top: 'clamp(140px, 23vw, 355px)',
+                width: `${12 + i * 3}px`,
+                height: `${12 + i * 3}px`,
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(200,220,255,0.45) 0%, rgba(180,200,240,0.15) 60%, transparent 100%)',
+                filter: `blur(${2 + i}px)`,
+                animation: `exhaust-puff ${1.4 + i * 0.13}s ease-out ${3.5 + i * 0.2}s infinite`,
+                zIndex: 6,
+              }}
+            />
+          ))}
+
+          {/* Long trailing contrail from engines */}
+          <div
+            className="absolute z-[5] pointer-events-none"
+            style={{
+              right: 'clamp(120px, 21vw, 320px)',
+              top: 'clamp(118px, 19vw, 292px)',
+              width: 'clamp(80px, 14vw, 220px)',
+              height: '6px',
+              background: 'linear-gradient(to right, rgba(200,220,255,0.5) 0%, rgba(200,220,255,0.15) 60%, transparent 100%)',
+              borderRadius: '999px',
+              filter: 'blur(3px)',
+              animation: 'contrail-trail 2s 3.2s both',
+            }}
+          />
+          <div
+            className="absolute z-[5] pointer-events-none"
+            style={{
+              right: 'clamp(140px, 24vw, 370px)',
+              top: 'clamp(148px, 24vw, 368px)',
+              width: 'clamp(60px, 10vw, 160px)',
+              height: '4px',
+              background: 'linear-gradient(to right, rgba(200,220,255,0.4) 0%, rgba(200,220,255,0.1) 60%, transparent 100%)',
+              borderRadius: '999px',
+              filter: 'blur(4px)',
+              animation: 'contrail-trail 2s 3.5s both',
+            }}
+          />
+        </>
       )}
 
       {/* ===== ANIMATED PLANE ===== */}
@@ -460,6 +499,26 @@ export default function Hero() {
           0% { opacity: 0; width: 0; }
           40% { opacity: 1; }
           100% { opacity: 0.4; }
+        }
+
+        @keyframes exhaust-puff {
+          0% {
+            transform: translate(0, 0) scale(0.3);
+            opacity: 0.7;
+          }
+          40% {
+            opacity: 0.4;
+          }
+          100% {
+            transform: translate(clamp(30px, 6vw, 100px), calc(-1 * clamp(15px, 3vw, 50px))) scale(2.5);
+            opacity: 0;
+          }
+        }
+
+        @keyframes contrail-trail {
+          0% { opacity: 0; transform: scaleX(0); transform-origin: left; }
+          30% { opacity: 0.6; }
+          100% { opacity: 0.3; transform: scaleX(1); transform-origin: left; }
         }
       `}</style>
     </section>
