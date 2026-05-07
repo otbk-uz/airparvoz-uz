@@ -84,10 +84,10 @@ export default function Hero() {
       <div
         className="plane-layer absolute z-[6] pointer-events-none"
         style={{
-          right: '5%',
-          top: '12%',
-          width: 'clamp(300px, 40vw, 600px)',
-          animation: 'plane-enter 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both',
+          right: '2%',
+          top: '15%',
+          width: 'clamp(250px, 35vw, 500px)',
+          animation: 'plane-enter 3s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both',
         }}
       >
         <img
@@ -95,7 +95,8 @@ export default function Hero() {
           alt="Uzbekistan Airways"
           className="w-full h-auto"
           style={{
-            filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.3))',
+            filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.2))',
+            mixBlendMode: 'multiply', // Oq fonni yo'qotadi
           }}
         />
       </div>
@@ -238,14 +239,11 @@ export default function Hero() {
         @keyframes plane-enter {
           0% {
             opacity: 0;
-            transform: translateX(200px) translateY(50px) scale(0.8);
-          }
-          60% {
-            opacity: 1;
+            transform: translateX(400px) translateY(-50px) rotate(-5deg) scale(0.6);
           }
           100% {
             opacity: 1;
-            transform: translateX(0) translateY(0) scale(1);
+            transform: translateX(0) translateY(0) rotate(0deg) scale(1);
           }
         }
       `}</style>
