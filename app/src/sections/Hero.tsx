@@ -8,8 +8,30 @@ export default function Hero() {
   const planeRef = useRef<HTMLDivElement>(null);
   const layersRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number>(0);
-
+  const scrollYRef = useRef(0);
+  const currentScrollRef = useRef(0);
   const [planeVisible, setPlaneVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Search functionality - bo'limlarga yo'naltiradi
+  const handleSearch = () => {
+    const q = searchQuery.toLowerCase().trim();
+    if (!q) {
+      document.getElementById('transport')?.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+    const sections: { keywords: string[]; id: string }[] = [
+      { keywords: ['avia', 'bilet', 'parvoz', 'flight', 'авиа', 'самолет', 'plane', 'ticket'], id: 'transport' },
+      { keywords: ['mehmonxona', 'hotel', 'отель', 'stay', 'yashash', 'room'], id: 'hotels' },
+      { keywords: ['tur', 'firma', 'company', 'турфирма', 'sayohat', 'travel', 'tour'], id: 'tour-firms' },
+      { keywords: ['360', 'virtual', 'ko\'rish', 'view', 'виртуал'], id: 'virtual-tours' },
+      { keywords: ['gid', 'guide', 'гид', 'volontyor'], id: 'guides' },
+      { keywords: ['ai', 'sun\'iy', 'intellekt', 'chat', 'yordamchi', 'assistant'], id: 'ai-assistant' },
+    ];
+    const matched = sections.find(s => s.keywords.some(k => q.includes(k)));
+    const targetId = matched?.id || 'transport';
+    document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   // Show plane after brief delay (dramatic reveal)
   useEffect(() => {
@@ -17,23 +39,52 @@ export default function Hero() {
     return () => clearTimeout(t);
   }, []);
 
-  // Scroll-driven parallax only
+  // Professional GPU-accelerated parallax
   useEffect(() => {
-    const handleScroll = () => {
-      if (!layersRef.current) return;
-      const scrollY = window.scrollY;
-      const layers = layersRef.current.querySelectorAll<HTMLElement>('.parallax-bg-layer');
-      layers.forEach((layer, i) => {
-        const speeds = [0.05, 0.12, 0.20, 0.28];
-        layer.style.transform = `translateY(${scrollY * speeds[i]}px)`;
-      });
+    // Parallax config: [speed, scaleCompensation]
+    const layerConfigs = [
+      { speed: 0.03, scale: 1.06 },  // Stars (slowest)
+      { speed: 0.12, scale: 1.18 },  // Mountains (far)
+      { speed: 0.22, scale: 1.28 },  // City (mid)
+      { speed: 0.32, scale: 1.38 },  // Clouds (near)
+    ];
+
+    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+    const lerpFactor = 0.08; // Smooth factor (0=no smoothing, 1=instant)
+
+    const tick = () => {
+      // Smooth interpolation
+      currentScrollRef.current = lerp(currentScrollRef.current, scrollYRef.current, lerpFactor);
+      const sy = currentScrollRef.current;
+
+      if (layersRef.current) {
+        const layers = layersRef.current.querySelectorAll<HTMLElement>('.parallax-bg-layer');
+        layers.forEach((layer, i) => {
+          const cfg = layerConfigs[i];
+          if (!cfg) return;
+          // translateY for parallax + translate3d for GPU acceleration
+          layer.style.transform = `translate3d(0, ${sy * cfg.speed}px, 0) scale(${cfg.scale})`;
+        });
+
+        // Plane moves up and fades as user scrolls
+        const plane = layersRef.current.parentElement?.querySelector<HTMLElement>('.plane-layer');
+        if (plane) {
+          const progress = Math.min(sy / 400, 1);
+          plane.style.transform = `translate3d(${sy * 0.08}px, ${-sy * 0.25}px, 0)`;
+          plane.style.opacity = String(1 - progress * 0.8);
+        }
+      }
+
+      rafRef.current = requestAnimationFrame(tick);
     };
 
     const onScroll = () => {
-      rafRef.current = requestAnimationFrame(handleScroll);
+      scrollYRef.current = window.scrollY;
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
+    rafRef.current = requestAnimationFrame(tick);
+
     return () => {
       window.removeEventListener('scroll', onScroll);
       cancelAnimationFrame(rafRef.current);
@@ -61,42 +112,50 @@ export default function Hero() {
 
         {/* Stars layer */}
         <div
-          className="parallax-bg-layer absolute inset-0"
+          className="parallax-bg-layer absolute"
           style={{
+            inset: '-20% 0',
             zIndex: 0,
-            backgroundImage: `radial-gradient(1px 1px at 20% 30%, white, transparent),
-              radial-gradient(1px 1px at 60% 15%, rgba(255,255,255,0.8), transparent),
-              radial-gradient(1.5px 1.5px at 80% 45%, white, transparent),
-              radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.6), transparent),
-              radial-gradient(1px 1px at 10% 55%, white, transparent),
-              radial-gradient(1px 1px at 90% 25%, rgba(255,255,255,0.7), transparent)`,
-            opacity: 0.5,
+            willChange: 'transform',
+            backgroundImage: `radial-gradient(1px 1px at 15% 25%, white, transparent),
+              radial-gradient(1px 1px at 55% 12%, rgba(255,255,255,0.8), transparent),
+              radial-gradient(1.5px 1.5px at 78% 40%, white, transparent),
+              radial-gradient(1px 1px at 35% 65%, rgba(255,255,255,0.6), transparent),
+              radial-gradient(1px 1px at 8% 50%, white, transparent),
+              radial-gradient(1px 1px at 88% 22%, rgba(255,255,255,0.7), transparent),
+              radial-gradient(1px 1px at 45% 80%, rgba(255,255,255,0.5), transparent),
+              radial-gradient(1px 1px at 70% 55%, white, transparent)`,
+            opacity: 0.6,
           }}
         />
 
         {/* Mountains (far) */}
         <div
-          className="parallax-bg-layer absolute inset-0"
+          className="parallax-bg-layer absolute"
           style={{
+            inset: '-20% 0',
             backgroundImage: 'url(/images/parallax-mountains.jpg)',
             backgroundSize: 'cover',
             backgroundPosition: 'center 60%',
             zIndex: 1,
-            opacity: 0.45,
+            opacity: 0.5,
+            willChange: 'transform',
           }}
         />
 
         {/* City (mid) */}
         <div
-          className="parallax-bg-layer absolute inset-0"
+          className="parallax-bg-layer absolute"
           style={{
+            inset: '-20% 0',
             backgroundImage: 'url(/images/parallax-city.jpg)',
             backgroundSize: 'cover',
             backgroundPosition: 'center 75%',
             zIndex: 2,
-            opacity: 0.35,
-            maskImage: 'linear-gradient(to bottom, transparent 0%, black 35%, black 70%, transparent 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 35%, black 70%, transparent 100%)',
+            opacity: 0.4,
+            willChange: 'transform',
+            maskImage: 'linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%)',
           }}
         />
 
@@ -155,7 +214,7 @@ export default function Hero() {
           right: '-2%',
           top: '8%',
           width: 'clamp(320px, 48vw, 750px)',
-          animation: planeVisible ? 'plane-fly-in 2.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both, plane-float 6s ease-in-out 3.5s infinite' : 'none',
+          animation: planeVisible ? 'plane-fly-in 2.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both' : 'none',
           opacity: planeVisible ? 1 : 0,
           transformOrigin: 'center center',
         }}
@@ -171,7 +230,7 @@ export default function Hero() {
             background: 'radial-gradient(ellipse, rgba(0,0,0,0.25) 0%, transparent 70%)',
             filter: 'blur(8px)',
             transform: 'scaleX(1.5) scaleY(0.4)',
-            animation: 'shadow-pulse 6s ease-in-out 3.5s infinite',
+
           }}
         />
         <img
@@ -282,10 +341,16 @@ export default function Hero() {
             <input
               type="text"
               placeholder={t('searchPlaceholder')}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
               className="bg-transparent border-none outline-none text-slate-700 w-full text-sm font-medium placeholder:text-slate-400"
             />
           </div>
-          <button className="w-full sm:w-auto px-8 py-3 bg-orange-500 hover:bg-orange-600 active:scale-95 text-white font-bold rounded-xl transition-all shadow-lg shadow-orange-500/30 text-sm">
+          <button
+            onClick={handleSearch}
+            className="w-full sm:w-auto px-8 py-3 bg-orange-500 hover:bg-orange-600 active:scale-95 text-white font-bold rounded-xl transition-all shadow-lg shadow-orange-500/30 text-sm"
+          >
             Qidirish
           </button>
         </div>
