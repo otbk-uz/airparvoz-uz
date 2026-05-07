@@ -20,17 +20,55 @@ export default function Hero() {
       document.getElementById('transport')?.scrollIntoView({ behavior: 'smooth' });
       return;
     }
+
     const sections: { keywords: string[]; id: string }[] = [
-      { keywords: ['avia', 'bilet', 'parvoz', 'flight', 'авиа', 'самолет', 'plane', 'ticket'], id: 'transport' },
-      { keywords: ['mehmonxona', 'hotel', 'отель', 'stay', 'yashash', 'room'], id: 'hotels' },
-      { keywords: ['tur', 'firma', 'company', 'турфирма', 'sayohat', 'travel', 'tour'], id: 'tour-firms' },
-      { keywords: ['360', 'virtual', 'ko\'rish', 'view', 'виртуал'], id: 'virtual-tours' },
-      { keywords: ['gid', 'guide', 'гид', 'volontyor'], id: 'guides' },
-      { keywords: ['ai', 'sun\'iy', 'intellekt', 'chat', 'yordamchi', 'assistant'], id: 'ai-assistant' },
+      { 
+        keywords: ['avia', 'bilet', 'parvoz', 'flight', 'авиа', 'самолет', 'plane', 'ticket', 'chipta', 'uchish', 'air', 'samalyot', 'reys'], 
+        id: 'transport' 
+      },
+      { 
+        keywords: ['mehmonxona', 'hotel', 'отель', 'stay', 'yashash', 'room', 'hostel', 'pansionat', 'joy', 'kvartira', 'apartament'], 
+        id: 'hotels' 
+      },
+      { 
+        keywords: ['tur', 'firma', 'company', 'турфирма', 'sayohat', 'travel', 'tour', 'paket', 'dam olish', 'agentlik', 'sayohatnom'], 
+        id: 'tour-firms' 
+      },
+      { 
+        keywords: ['360', 'virtual', 'ko\'rish', 'view', 'виртуал', 'panorama', 'aylanib ko\'rish', 'online sayohat', 'onlayn'], 
+        id: 'virtual-tours' 
+      },
+      { 
+        keywords: ['gid', 'guide', 'гид', 'volontyor', 'hamroh', 'yo\'l ko\'rsatuvchi', 'tushuntirish', 'tarjimon'], 
+        id: 'guides' 
+      },
+      { 
+        keywords: ['samarqand', 'buxoro', 'xiva', 'toshkent', 'farg\'ona', 'andijon', 'namangan', 'nukus', 'termiz', 'qarshi', 'shahar', 'city'], 
+        id: 'transport' 
+      },
+      { 
+        keywords: ['ai', 'sun\'iy', 'intellekt', 'chat', 'yordamchi', 'assistant', 'savol', 'javob', 'bot', 'yordam', 'help'], 
+        id: 'guides' 
+      },
     ];
+
+    // Find best match based on keyword inclusion
     const matched = sections.find(s => s.keywords.some(k => q.includes(k)));
     const targetId = matched?.id || 'transport';
-    document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' });
+    
+    const element = document.getElementById(targetId);
+    if (element) {
+      const offset = 80; // Header offset
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
   };
 
   // Show plane after brief delay (dramatic reveal)
