@@ -91,7 +91,7 @@ export default function Hero() {
         }}
       >
         <img
-          src="/images/plane-flying.png"
+          src="/images/plane-uzb.png"
           alt="Uzbekistan Airways"
           className="w-full h-auto"
           style={{
@@ -162,14 +162,32 @@ export default function Hero() {
           </p>
         </div>
 
+        {/* Hero Search Bar (Prominent) */}
+        <div 
+          className="mt-10 w-full max-w-3xl bg-white rounded-2xl shadow-2xl p-2 flex flex-col sm:flex-row items-center gap-2"
+          style={{ animation: 'fade-in-up 0.8s 1.1s both' }}
+        >
+          <div className="flex-1 flex items-center gap-3 px-4 py-3 w-full border-b sm:border-b-0 sm:border-r border-slate-100">
+            <svg className="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+            <input 
+              type="text" 
+              placeholder={t('searchPlaceholder')} 
+              className="bg-transparent border-none outline-none text-slate-700 w-full text-sm font-medium"
+            />
+          </div>
+          <button className="w-full sm:w-auto px-10 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-all shadow-lg shadow-orange-500/30">
+            Qidirish
+          </button>
+        </div>
+
         {/* CTA */}
-        <div className="flex flex-col sm:flex-row gap-3 mt-8" style={{ animation: 'fade-in-up 0.8s 1.2s both' }}>
-          <button onClick={scrollToContent} className="btn-primary flex items-center gap-2">
+        <div className="flex flex-col sm:flex-row gap-3 mt-8" style={{ animation: 'fade-in-up 0.8s 1.3s both' }}>
+          <button onClick={scrollToContent} className="btn-primary flex items-center gap-2 px-10">
             {t('heroCta')}
           </button>
           <button 
             onClick={scrollToContent} 
-            className="flex items-center gap-2 px-8 py-3 rounded-full bg-orange-500 text-white font-semibold hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/30"
+            className="flex items-center gap-2 px-10 py-3 rounded-full bg-white/10 backdrop-blur-md text-white font-semibold hover:bg-white/20 border border-white/20 transition-all"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
             360° ko'rish

@@ -177,13 +177,30 @@ export default function Header() {
 
         {/* Mobile Menu */}
         {showMobileMenu && (
-          <div className="bg-white border-t border-slate-100 px-4 py-4 space-y-1 animate-fade-in-up">
-            {navLinks.map((link) => (
-              <button key={link.id} onClick={() => handleNavClick(link.id)} className="w-full text-left px-4 py-3 rounded-xl text-sm text-[#0A1628] hover:bg-slate-50 font-medium">
-                {link.label}
-              </button>
-            ))}
-            <div className="pt-3 border-t border-slate-100 flex gap-2">
+          <div className="bg-white border-t border-slate-100 px-4 py-4 space-y-4 animate-fade-in-up">
+            {/* Mobile Search */}
+            <div className="px-2">
+              <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-100">
+                <Search className="w-4 h-4 text-slate-400" />
+                <input
+                  type="text"
+                  placeholder={t('searchPlaceholder')}
+                  className="bg-transparent border-none outline-none text-sm text-slate-900 w-full"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              {navLinks.map((link) => (
+                <button key={link.id} onClick={() => handleNavClick(link.id)} className="w-full text-left px-4 py-3 rounded-xl text-sm text-[#0A1628] hover:bg-slate-50 font-medium">
+                  {link.label}
+                </button>
+              ))}
+            </div>
+            
+            <div className="pt-3 border-t border-slate-100 flex flex-wrap gap-2">
               {languages.map((lang) => (
                 <button
                   key={lang.code}
