@@ -352,38 +352,6 @@ export default function Hero() {
         className="relative z-10 flex flex-col items-center justify-center h-full px-6 text-center"
         style={{ paddingTop: '64px' }}
       >
-
-      {/* Floating Search Bar (Absolute to plane) */}
-      <div className="hidden lg:flex absolute right-[8%] top-[55%] z-20 w-full max-w-xl">
-          <div
-            className="w-full rounded-2xl shadow-2xl p-1.5 flex flex-row items-center gap-1.5"
-            style={{
-              background: 'rgba(255,255,255,0.96)',
-              animation: 'fade-in-up 0.8s 1.1s both',
-            }}
-          >
-            <div className="flex-1 flex items-center gap-3 px-4 py-3">
-              <svg className="w-5 h-5 text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-              <input
-                type="text"
-                placeholder={t('searchPlaceholder')}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                className="bg-transparent border-none outline-none text-slate-700 w-full text-sm font-medium placeholder:text-slate-400"
-              />
-            </div>
-            <button
-              onClick={handleSearch}
-              className="px-8 py-3 bg-orange-500 hover:bg-orange-600 active:scale-95 text-white font-bold rounded-xl transition-all shadow-lg shadow-orange-500/30 text-sm"
-            >
-              Qidirish
-            </button>
-          </div>
-      </div>
-
         {/* Main Title */}
         <h1
           className="text-white font-bold leading-[0.92] tracking-tight max-w-4xl"
@@ -407,10 +375,8 @@ export default function Hero() {
           Aviabiletlar, mehmonxonalar, gidlar va ekskursiyalar — barchasi bir joyda
         </p>
 
-
-
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-3 mt-6" style={{ animation: 'fade-in-up 0.8s 1.3s both' }}>
+        <div className="flex flex-col sm:flex-row gap-4 mt-12" style={{ animation: 'fade-in-up 0.8s 1.3s both' }}>
           <button
             onClick={() => scrollToId('transport')}
             className="flex items-center gap-2 px-10 py-3.5 rounded-full bg-[#14B8A6] hover:bg-[#0D9488] text-white font-semibold transition-all shadow-lg shadow-[#14B8A6]/30 hover:shadow-[#14B8A6]/50 hover:-translate-y-1 active:scale-95"
@@ -441,6 +407,37 @@ export default function Hero() {
           <span className="text-white/30 text-[10px] uppercase tracking-[0.25em]">Scroll</span>
           <ChevronDown className="w-5 h-5 text-white/30 animate-bounce" />
         </div>
+      </div>
+
+      {/* Floating Search Bar (Absolute to plane) - Outside main content flow */}
+      <div className="hidden lg:flex absolute right-[5%] top-[55%] z-20 w-full max-w-xl">
+          <div
+            className="w-full rounded-2xl shadow-2xl p-1.5 flex flex-row items-center gap-1.5"
+            style={{
+              background: 'rgba(255,255,255,0.96)',
+              animation: 'fade-in-up 0.8s 1.1s both',
+            }}
+          >
+            <div className="flex-1 flex items-center gap-3 px-4 py-3">
+              <svg className="w-5 h-5 text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <input
+                type="text"
+                placeholder={t('searchPlaceholder')}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                className="bg-transparent border-none outline-none text-slate-700 w-full text-sm font-medium placeholder:text-slate-400"
+              />
+            </div>
+            <button
+              onClick={handleSearch}
+              className="px-8 py-3 bg-orange-500 hover:bg-orange-600 active:scale-95 text-white font-bold rounded-xl transition-all shadow-lg shadow-orange-500/30 text-sm"
+            >
+              Qidirish
+            </button>
+          </div>
       </div>
 
       {/* ===== UZBEKISTAN watermark text ===== */}
