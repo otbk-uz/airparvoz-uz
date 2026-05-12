@@ -410,7 +410,7 @@ export default function Hero() {
       </div>
 
       {/* Floating Search Bar (Absolute to plane) - Outside main content flow */}
-      <div className="hidden lg:flex absolute right-[5%] top-[55%] z-20 w-full max-w-xl">
+      <div className="hidden lg:flex absolute right-[5%] top-[48%] z-20 w-full max-w-xl">
           <div
             className="w-full rounded-2xl shadow-2xl p-1.5 flex flex-row items-center gap-1.5"
             style={{
