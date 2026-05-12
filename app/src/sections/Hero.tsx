@@ -349,7 +349,7 @@ export default function Hero() {
 
       {/* ===== CONTENT ===== */}
       <div
-        className="relative z-10 flex flex-col items-center justify-center h-full px-6 text-center"
+        className="relative z-10 flex flex-col items-end justify-center h-full px-6 lg:px-20 text-right"
         style={{ paddingTop: '64px' }}
       >
 

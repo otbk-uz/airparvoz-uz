@@ -90,7 +90,7 @@ export default function Header() {
           </button>
 
           {/* Center Nav */}
-          <div className="flex-1 flex items-center justify-center gap-5 overflow-x-auto no-scrollbar">
+          <div className="flex-1 flex items-center justify-start gap-5 overflow-x-auto no-scrollbar ml-10">
             {navLinks.map((link) => (
               <button
                 key={link.id}
