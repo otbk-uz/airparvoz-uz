@@ -377,8 +377,8 @@ export default function Hero() {
         </p>
 
 
-        {/* Search Bar Wrapper - moved up to be closer under the plane */}
-        <div className="w-full flex justify-end -mt-10 lg:-mt-16 xl:-mt-24 lg:pr-32 xl:pr-56 relative z-20">
+        {/* Search Bar Wrapper - precisely positioned under the plane as per user arrow */}
+        <div className="w-full flex justify-end -mt-32 lg:-mt-44 xl:-mt-56 lg:pr-12 xl:pr-32 relative z-20">
           <div
             className="w-full max-w-xl rounded-2xl shadow-2xl p-1.5 flex flex-col sm:flex-row items-center gap-1.5"
             style={{
