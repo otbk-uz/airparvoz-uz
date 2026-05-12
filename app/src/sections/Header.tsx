@@ -102,23 +102,23 @@ export default function Header() {
             ))}
           </div>
 
-          {/* Search Panel */}
-          <div className="relative group flex-shrink-0">
-            <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-300 ${scrolled ? 'bg-slate-50 border-slate-200' : 'bg-white/10 border-white/20'}`}>
-              <Search className={`w-3.5 h-3.5 ${scrolled ? 'text-slate-400' : 'text-white/50'}`} />
-              <input
-                type="text"
-                placeholder={t('searchPlaceholder')}
-                className={`bg-transparent border-none outline-none text-xs w-24 focus:w-40 transition-all ${scrolled ? 'text-slate-900 placeholder:text-slate-400' : 'text-white placeholder:text-white/40'}`}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleHeaderSearch()}
-              />
-            </div>
-          </div>
 
           {/* Right side */}
           <div className="flex items-center gap-3 flex-shrink-0">
+            {/* Search Panel */}
+            <div className="relative group flex-shrink-0">
+              <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-300 ${scrolled ? 'bg-slate-50 border-slate-200' : 'bg-white/10 border-white/20'}`}>
+                <Search className={`w-3.5 h-3.5 ${scrolled ? 'text-slate-400' : 'text-white/50'}`} />
+                <input
+                  type="text"
+                  placeholder={t('searchPlaceholder')}
+                  className={`bg-transparent border-none outline-none text-xs w-24 focus:w-40 transition-all ${scrolled ? 'text-slate-900 placeholder:text-slate-400' : 'text-white placeholder:text-white/40'}`}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleHeaderSearch()}
+                />
+              </div>
+            </div>
             {/* Language */}
             <div className="relative">
               <button
