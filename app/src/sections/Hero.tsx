@@ -378,9 +378,9 @@ export default function Hero() {
 
 
         {/* Search Bar Wrapper for right alignment */}
-        <div className="w-full flex justify-end mt-8 lg:pr-10">
+        <div className="w-full flex justify-end mt-10 lg:pr-20 xl:pr-40">
           <div
-            className="w-full max-w-2xl rounded-2xl shadow-2xl p-1.5 flex flex-col sm:flex-row items-center gap-1.5"
+            className="w-full max-w-xl rounded-2xl shadow-2xl p-1.5 flex flex-col sm:flex-row items-center gap-1.5"
             style={{
               background: 'rgba(255,255,255,0.96)',
               animation: 'fade-in-up 0.8s 1.1s both',
