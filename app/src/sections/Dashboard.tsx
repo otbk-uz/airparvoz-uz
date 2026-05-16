@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Plane, Hotel, Car, UserCheck, Bot, Calendar, MapPin, Users, CheckCircle2, Clock, ChevronRight, LogOut, Sparkles, ArrowLeft, Send, Search, Ticket, Heart } from 'lucide-react';
+import { Plane, Hotel, Car, UserCheck, Bot, Calendar, MapPin, CheckCircle2, Clock, LogOut, Sparkles, Send, Ticket, Heart, X } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { useApp } from '@/context/AppContext';
 

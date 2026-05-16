@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Users, Calendar, CreditCard, Building2, Hotel, BarChart3, ArrowLeft, CheckCircle2, Clock, Search, Filter, Trash2, Edit2, ShieldCheck, MoreVertical, TrendingUp, TrendingDown, DollarSign } from 'lucide-react';
+import { Users, Calendar, CreditCard, Building2, Hotel, BarChart3, ArrowLeft, CheckCircle2, Clock, Search, Filter, Trash2, Edit2, ShieldCheck, MoreVertical, TrendingUp, TrendingDown, DollarSign, MapPin } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { useApp } from '@/context/AppContext';
 
