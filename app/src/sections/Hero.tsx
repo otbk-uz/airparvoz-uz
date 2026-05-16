@@ -409,36 +409,6 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Floating Search Bar (Absolute to plane) - Outside main content flow */}
-      <div className="hidden lg:flex absolute right-[5%] top-[48%] z-20 w-full max-w-xl">
-          <div
-            className="w-full rounded-2xl shadow-2xl p-1.5 flex flex-row items-center gap-1.5"
-            style={{
-              background: 'rgba(255,255,255,0.96)',
-              animation: 'fade-in-up 0.8s 1.1s both',
-            }}
-          >
-            <div className="flex-1 flex items-center gap-3 px-4 py-3">
-              <svg className="w-5 h-5 text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-              <input
-                type="text"
-                placeholder={t('searchPlaceholder')}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                className="bg-transparent border-none outline-none text-slate-700 w-full text-sm font-medium placeholder:text-slate-400"
-              />
-            </div>
-            <button
-              onClick={handleSearch}
-              className="px-8 py-3 bg-orange-500 hover:bg-orange-600 active:scale-95 text-white font-bold rounded-xl transition-all shadow-lg shadow-orange-500/30 text-sm"
-            >
-              Qidirish
-            </button>
-          </div>
-      </div>
 
       {/* ===== UZBEKISTAN watermark text ===== */}
       <div
