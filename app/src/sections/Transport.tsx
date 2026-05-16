@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Plane, Train, Bus, Car, ArrowRight } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+import { useApp } from '@/context/AppContext';
 
 const services = [
   { icon: Plane, title: 'aviabilet', desc: 'aviaDesc', color: 'bg-sky-50 text-sky-600', border: 'border-sky-100' },
@@ -11,6 +12,7 @@ const services = [
 
 export default function Transport() {
   const { t } = useLanguage();
+  const { setShowBooking } = useApp();
   const sectionRef = useRef<HTMLElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
 
@@ -51,7 +53,8 @@ export default function Transport() {
             return (
               <div
                 key={service.title}
-                className="transport-card group cursor-pointer rounded-2xl border p-6 sm:p-8 card-elevate hover:border-[#14B8A6]/40"
+                className="transport-card group cursor-pointer rounded-2xl border p-6 sm:p-8 card-elevate hover:border-[#14B8A6]/40 transition-all duration-300"
+                onClick={() => setShowBooking(true)}
                 style={{
                   opacity: 0,
                   transform: 'translateY(30px)',

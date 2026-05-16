@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Star, MapPin, ArrowRight, Building2 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+import { useApp } from '@/context/AppContext';
 
 const firms = [
   { id: 1, name: 'Samarkand Travel', location: 'Samarqand', rating: 4.9, tours: 24, image: '/images/tour-samarkand.jpg', featured: 'Samarqand — Buxoro' },
@@ -10,6 +11,7 @@ const firms = [
 
 export default function TourFirms() {
   const { t } = useLanguage();
+  const { setShowBooking } = useApp();
   const sectionRef = useRef<HTMLElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
 
@@ -48,6 +50,7 @@ export default function TourFirms() {
               key={firm.id}
               className="firm-card group cursor-pointer rounded-2xl overflow-hidden bg-white border border-slate-100 hover:border-[#14B8A6]/30 hover:shadow-xl transition-all duration-500"
               style={{ opacity: 0, transform: 'translateY(30px)', transition: 'all 0.7s cubic-bezier(0.16, 1, 0.3, 1)' }}
+              onClick={() => setShowBooking(true)}
             >
               <div className="relative aspect-[16/9] overflow-hidden">
                 <img src={firm.image} alt={firm.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
